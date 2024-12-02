@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Image } from "react-native";
 import { useRouter } from "expo-router";
 import CafeCardInfo from "@/app/components/common/CafeCardInfo";
 import ChipBar from "./components/common/ChipBar";
@@ -10,12 +10,14 @@ interface Cafe {
   image: any;
   name: string;
   cuisine: string;
+  category: string;
   rating: number;
 }
 
 export default function Home() {
   const router = useRouter();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<number[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   const handleFavoritePress = (id: number) => {
     setFavoriteRestaurants((prevFavorites) => {
@@ -28,8 +30,12 @@ export default function Home() {
   };
 
   const handleFilterChange = (label: string) => {
-    console.log("Selected filter:", label);
+    setSelectedFilter(label); // Сохраняем выбранный фильтр
   };
+
+  const filteredData = selectedFilter
+    ? cafeData.filter((cafe) => cafe.cuisine === selectedFilter)
+    : cafeData;
 
   const renderItem = ({ item }: { item: Cafe }) => (
     <CafeCardInfo
@@ -38,16 +44,18 @@ export default function Home() {
       cuisine={item.cuisine}
       rating={item.rating}
       onFavoritePress={() => handleFavoritePress(item.id)}
-      onCafePress={() => router.push({pathname:"/"})}
-      />
+      onCafePress={() => router.push({ pathname: "/components/common/CafeID" })}
+      category={item.category}
+    />
   );
 
   return (
     <View style={styles.container}>
+      <Image source={require("../assets/images/ad.png")} style={styles.adph} />
       <ChipBar onFilterChange={handleFilterChange} />
 
       <FlatList
-        data={cafeData}
+        data={filteredData} // Используем отфильтрованные данные
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
@@ -62,7 +70,10 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "#F9F9F9",
   },
-  grid: {
-    alignItems: "center",
+  grid: {},
+  adph: {
+    width: "100%",
+    borderRadius: 12,
+    resizeMode: "contain",
   },
 });

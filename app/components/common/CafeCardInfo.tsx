@@ -14,6 +14,7 @@ interface CafeCardInfoProps {
   name: string;
   cuisine: string;
   rating: number;
+  category: string;
   onFavoritePress: () => void;
   onCafePress: () => void;
 }
@@ -23,6 +24,7 @@ const CafeCardInfo: React.FC<CafeCardInfoProps> = ({
   name,
   cuisine,
   rating,
+  category,
   onFavoritePress,
   onCafePress,
 }) => {
@@ -47,7 +49,7 @@ const CafeCardInfo: React.FC<CafeCardInfoProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: "55%",
+    width: "50%",
     padding: 8,
     marginBottom: 20,
     backgroundColor: "#fff",

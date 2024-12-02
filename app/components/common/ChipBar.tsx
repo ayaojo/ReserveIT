@@ -6,9 +6,9 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import filters from "../../../services/filters";
+import categories from "../../../services/categories";
 
-interface Filter {
+interface Category {
   id: number;
   label: string;
 }
@@ -20,7 +20,7 @@ interface ChipBarProps {
 const ChipBar: React.FC<ChipBarProps> = ({ onFilterChange }) => {
   const [selectedFilter, setSelectedFilter] = useState<number | null>(null);
 
-  const handleFilterSelect = (filter: Filter) => {
+  const handleFilterSelect = (filter: Category) => {
     setSelectedFilter(filter.id);
     onFilterChange(filter.label);
   };
@@ -31,7 +31,7 @@ const ChipBar: React.FC<ChipBarProps> = ({ onFilterChange }) => {
       horizontal
       contentContainerStyle={styles.chipBar}
     >
-      {filters.map((filter: Filter) => (
+      {categories.map((filter: Category) => (
         <TouchableOpacity
           key={filter.id}
           style={[
